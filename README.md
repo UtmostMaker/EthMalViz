@@ -1,152 +1,157 @@
-# CyberScape Navigator
+# EthMalViz
 
-**Project Description:** An interactive platform for modeling IT environments as knowledge graphs, simulating multi-step cyberattacks (based on MITRE ATT&CK), dynamically visualizing their progression, predicting attacker's next likely steps using Machine Learning, and allowing user-driven defensive countermeasures with real-time impact visualization.
+EthMalViz is an interactive platform for detecting and visualizing malicious Ethereum transactions in a 3D knowledge graph. It leverages deep learning (NLP + LSTM/CNN) to classify on-chain data, Neo4j to store and query transaction relationships, FastAPI as the backend, and React + Three.js for dynamic front-end visualization.
 
 ## Key Features
 
-*   **Knowledge Graph Representation:** Model complex IT environments (assets, vulnerabilities, connections, services) using a graph database (e.g., Neo4j).
-*   **Attack Simulation Engine:** Simulate multi-stage cyberattack scenarios based on the MITRE ATT&CK framework.
-*   **Real-time Interactive Visualization:** Dynamically display the IT environment, attack paths, and asset states using web technologies (e.g., React/Vue + D3.js/Cytoscape.js).
-*   **Predictive ML Model:** Employ Machine Learning (e.g., GNN, RNN/LSTM) to predict an attacker's next likely moves.
-*   **Interactive Defense:** Allow users to apply defensive countermeasures and see their immediate impact on the simulation.
-*   **Dynamic Risk Heatmap:** Visualize vulnerability hotspots and overall risk levels across the environment.
+* Continuous ingestion of Ethereum transactions via Etherscan/Infura API  
+* NLP + LSTM/CNN model for phishing, scam, and malware transaction detection  
+* Neo4j knowledge graph of `Address`, `Transaction`, and `Alert` entities  
+* FastAPI endpoints for `/transactions`, `/predict`, and `/graph`  
+* React + Three.js front-end: 3D graph rendering with animated, color-coded suspicious flows  
+* Docker support for one-command deployment
 
-## Technology Stack (Planned)
+## Technology Stack
 
-*   **Backend:** Python, FastAPI (or Flask)
-*   **Machine Learning:** PyTorch, TensorFlow (CPU-focused for this project), Scikit-learn
-*   **Graph Database:** Neo4j (or alternatives like ArangoDB, NebulaGraph if preferred)
-*   **Frontend:** JavaScript/TypeScript, React or Vue.js
-*   **Visualization Libraries:** D3.js, Cytoscape.js, or similar
-*   **Development Environment:** Fedora 42, VS Code, Python 3.12 (in `cyber-env-py312` virtual environment)
-*   **Version Control:** Git & GitHub
+* **Language & ML**: Python 3.12, PyTorch (CPU), TensorFlow-CPU, Scikit-learn  
+* **Database**: Neo4j  
+* **Backend**: FastAPI, Uvicorn  
+* **Frontend**: React, Three.js  
+* **Dev Environment**: Fedora 42, VS Code, `venv` (`cyber-env-py312`)  
+* **Version Control**: Git & GitHub
 
 ## Project Roadmap
 
-This roadmap outlines the planned phases and key tasks for the development of CyberScape Navigator.
+### Milestone 0: Project Initialization (Completed)
 
-### Milestone 0: Project Setup & Initial Commit (COMPLETED)
+* Created GitHub repo `UtmostMaker/EthMalViz`  
+* Set up `cyber-env-py312` Python 3.12 virtual environment  
+* Added `requirements.txt`, `.gitignore`, initial `README.md`
 
-*   **Tasks:**
-    *   GitHub repository created (`UtmostMaker/CyberScape-Navigator`).
-    *   Initial project directory structure established.
-    *   Python 3.12 virtual environment (`cyber-env-py312`) set up.
-    *   `requirements.txt` created with core dependencies.
-    *   Basic `README.md` (this file!) and `.gitignore` initialized.
-*   **Status:** Done.
+### Milestone 1: Data Collection & Labeling (Weeks 1–4)
 
-### Milestone 1: Environment Modeling & Data Foundation (Weeks 1-4)
+1. Define target malicious transaction categories (phishing, scam, mixer use).  
+2. Fetch labeled addresses from Etherscam DB, Ethereum scam lists.  
+3. Use Etherscan/Infura API to download raw transactions for these addresses.  
+4. Store raw JSON in `data/raw/`; build cleaned CSV/Parquet in `data/processed/`.  
+5. Document data schema and labeling process in `notebooks/01_data_collection.ipynb`.
 
-*   **Goal:** Establish the data model for the IT environment and integrate foundational datasets.
-*   **Tasks:**
-    *   Define a detailed schema for the IT environment knowledge graph.
-    *   Develop Python scripts (`src/core/graph_builder.py`) to generate/import synthetic IT environment data.
-    *   Download, parse, and structure MITRE ATT&CK framework data.
-    *   Set up and configure a local Neo4j instance.
-    *   Implement scripts to populate Neo4j with environment data and MITRE ATT&CK mappings.
-*   **Deliverables:**
-    *   Populated Neo4j database.
-    *   Python scripts for graph generation and data ingestion.
-    *   Graph schema documentation.
+### Milestone 2: Model Development & Training (Weeks 5–8)
 
-### Milestone 2: Core Attack Simulation Engine (Weeks 5-8)
+1. Extract text/binary features from transaction `input_data` (OP_RETURN, calldata).  
+2. Build embeddings (Word2Vec or DistilBERT) and sequence inputs.  
+3. Implement a 1D CNN + LSTM classifier in `src/ml/models.py`.  
+4. Train and evaluate on CPU; target F1 score ≥ 0.85.  
+5. Save best model checkpoint to `models/`; document in `notebooks/03_model_training.ipynb`.
 
-*   **Goal:** Develop backend logic to simulate attack progression.
-*   **Tasks:**
-    *   Design core logic for simulating multi-step attack paths (MITRE ATT&CK based).
-    *   Implement the simulation engine (`src/core/simulation_engine.py`).
-    *   Develop initial API endpoints (`src/api/endpoints/simulation.py`) for simulation control.
-*   **Deliverables:**
-    *   Functional backend simulation engine.
-    *   API endpoints for simulations.
-    *   Simulation event logging.
+### Milestone 3: Knowledge Graph Construction (Weeks 9–12)
 
-### Milestone 3: Visualization Layer - Frontend Implementation (Weeks 9-14)
+1. Design Neo4j schema: nodes `Address`, `Transaction`, `Alert`; relationships `SENT`, `RECEIVED`, `FLAGGED_AS`.  
+2. Write `src/graph/builder.py` to ingest processed data and model predictions into Neo4j.  
+3. Create common query templates in `src/graph/queries.py`.  
+4. Validate graph connectivity and indexes.
 
-*   **Goal:** Create an interactive web interface for visualization.
-*   **Tasks:**
-    *   Set up frontend project (`frontend/`).
-    *   Integrate a graph visualization library (e.g., Cytoscape.js).
-    *   Develop components for graph display and simulation control.
-    *   Implement API communication between frontend and backend.
-*   **Deliverables:**
-    *   Interactive web application displaying the knowledge graph and attack progression.
-    *   UI for simulation control.
+### Milestone 4: Backend & API (Weeks 13–16)
 
-### Milestone 4: Predictive Analytics - Attacker's Next Step (Weeks 15-18)
+1. Scaffold FastAPI app in `src/api/main.py`.  
+2. Implement `/transactions` (list recent), `/predict` (classify one tx), `/graph` (return graph JSON) endpoints.  
+3. Add Pydantic schemas in `src/api/schemas.py`.  
+4. Write unit tests for each endpoint in `tests/unit/`.  
+5. Document API usage in `docs/api_reference.md`.
 
-*   **Goal:** Integrate an ML model to predict attacker's next actions.
-*   **Tasks:**
-    *   Research and select suitable ML models (GNN, RNN/LSTM).
-    *   Prepare training data from simulations or public datasets.
-    *   Develop, train, and evaluate the ML model (`src/ml/`).
-    *   Integrate the trained model into the backend and API.
-    *   Visualize predictions on the frontend.
-*   **Deliverables:**
-    *   Trained ML model.
-    *   Integration of ML predictions into simulation and visualization.
-    *   Jupyter notebooks for ML development (`notebooks/`).
+### Milestone 5: Front-End Visualization (Weeks 17–20)
 
-### Milestone 5: Defensive Interactions & Enhancements (Weeks 19-22)
+1. Initialize React project in `frontend/`.  
+2. Integrate Three.js and load graph data via `/graph`.  
+3. Render nodes/edges in 3D; animate transaction flows as moving particles.  
+4. Color-code nodes/edges by suspicion score; add UI controls (filter by score, time window).  
+5. Test on sample data; record demo GIF.
 
-*   **Goal:** Allow user-driven defensive actions and enhance analytical views.
-*   **Tasks:**
-    *   Define defensive countermeasures.
-    *   Implement logic for applying and reflecting countermeasures in the simulation.
-    *   Develop frontend UI for applying defenses.
-    *   Visualize countermeasure impact.
-    *   Implement a dynamic risk/vulnerability heatmap.
-*   **Deliverables:**
-    *   Interactive defensive functionality.
-    *   Visualization of countermeasure effectiveness.
-    *   Dynamic risk heatmap.
+### Milestone 6: Testing, Documentation & Deployment (Weeks 21–24)
 
-### Milestone 6: Testing, Documentation, and Finalization (Weeks 23-24)
+1. Complete integration tests and end-to-end tests.  
+2. Finalize user and developer documentation in `docs/`.  
+3. Add a `Dockerfile` and `docker-compose.yml` for full-stack deployment.  
+4. Polish README with screenshots and badges.  
+5. Produce a demo video and share on your portfolio.
 
-*   **Goal:** Ensure a robust, well-documented, and presentable final project.
-*   **Tasks:**
-    *   Conduct comprehensive testing (unit, integration, end-to-end).
-    *   Refine UI/UX.
-    *   Write comprehensive project documentation (README, code comments, `docs/`).
-    *   Prepare final demonstration.
-    *   (Optional) Create `Dockerfile`.
-*   **Deliverables:**
-    *   Stable, well-tested application.
-    *   Complete project documentation.
-    *   Project demo.
+## Setup & Installation
 
-## Setup and Installation
+1. Clone the repo and enter it:  
 
-(Instructions to be added once the initial setup is more concrete)
+```
+git clone https://github.com/UtmostMaker/EthMalViz.git
+cd EthMalViz
+```
 
-1.  Clone the repository:
-    ```
-    git clone https://github.com/UtmostMaker/CyberScape-Navigator.git
-    cd CyberScape-Navigator
-    ```
-2.  Create and activate the Python virtual environment (e.g., using Python 3.12):
-    ```
-    python3.12 -m venv cyber-env-py312
-    source cyber-env-py312/bin/activate
-    ```
-3.  Install dependencies:
-    ```
-    pip install -r requirements.txt
-    # Specific instructions for PyTorch CPU if needed:
-    # pip install torch --index-url https://download.pytorch.org/whl/cpu
-    ```
-4.  Set up Neo4j (Instructions TBD).
-5.  Run the application (Instructions TBD).
+2. Create & activate the venv:  
 
-## Usage
+```
+python3.12 -m venv cyber-env-py312
+source cyber-env-py312/bin/activate
+```
+3. Install Python dependencies:  
 
-(Instructions to be added)
+```
+pip install -r requirements.txt
+```
 
-## Contributing
+4. Start Neo4j (desktop or Docker).  
+5. Launch the backend:  
 
-(Guidelines for contributing to be added if applicable)
+```
+uvicorn src.api.main:app --reload
+```
+6. Start the frontend:  
 
-## License
+```
+cd frontend
+npm install
+npm start
+```
 
-(To be decided - e.g., MIT License)
-
+```
+EthMalViz/
+├── .gitignore
+├── data/
+│   ├── raw/
+│   ├── processed/
+│   └── external/
+├── notebooks/
+│   ├── 01_data_collection.ipynb
+│   ├── 02_data_preparation.ipynb
+│   └── 03_model_training.ipynb
+├── src/
+│   ├── __init__.py
+│   ├── data/
+│   │   ├── collectors.py
+│   │   └── preprocess.py
+│   ├── ml/
+│   │   ├── __init__.py
+│   │   ├── models.py
+│   │   ├── train.py
+│   │   └── predict.py
+│   ├── graph/
+│   │   ├── __init__.py
+│   │   ├── builder.py
+│   │   └── queries.py
+│   ├── api/
+│   │   ├── __init__.py
+│   │   ├── main.py
+│   │   └── endpoints/
+│   │       ├── transactions.py
+│   │       └── graph.py
+│   └── utils/
+│       ├── __init__.py
+│       └── helpers.py
+├── frontend/
+│   ├── public/
+│   └── src/
+│       ├── App.js
+│       └── components/
+├── models/
+├── requirements.txt
+├── README.md
+├── LICENSE
+└── Dockerfile
+```
