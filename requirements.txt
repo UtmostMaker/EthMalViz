@@ -1,0 +1,13 @@
+fastapi
+uvicorn
+neo4j
+networkx
+pandas
+numpy
+scikit-learn
+torch
+tensorflow-cpu
+matplotlib
+plotly
+jupyter
+

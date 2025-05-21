@@ -1,0 +1,61 @@
+CyberScape-Navigator/
+│
+├── .git/                      # Dossier Git (créé automatiquement, souvent caché)
+├── .gitignore                 # Fichier pour spécifier les fichiers à ignorer par Git
+│
+├── data/                      # Données du projet
+│   ├── raw/                   # Données brutes, originales (ex: datasets téléchargés)
+│   ├── processed/             # Données nettoyées, transformées, prêtes pour l'analyse/modélisation
+│   ├── interim/               # Fichiers de données intermédiaires (résultats de transformations partielles)
+│   └── external/              # Données provenant de sources externes (ex: API, autres projets)
+│
+├── notebooks/                 # Jupyter notebooks pour l'exploration, l'expérimentation
+│   ├── 01_data_exploration.ipynb
+│   ├── 02_preprocessing.ipynb
+│   ├── 03_model_prototyping.ipynb
+│   └── 04_simulation_tests.ipynb
+│
+├── src/                       # Code source principal de l'application
+│   ├── __init__.py            # Rend le dossier 'src' importable comme un package Python
+│   ├── api/                   # Code pour votre API backend (ex: FastAPI, Flask)
+│   │   ├── __init__.py
+│   │   ├── main.py            # Point d'entrée de l'API
+│   │   ├── endpoints/         # Modules pour les différents points de terminaison de l'API
+│   │   └── schemas/           # Schémas de données (ex: Pydantic)
+│   ├── core/                  # Logique métier principale
+│   │   ├── __init__.py
+│   │   ├── graph_builder.py   # Construction du graphe de connaissance
+│   │   └── simulation_engine.py # Moteur de simulation des attaques
+│   ├── ml/                    # Modules pour le machine learning
+│   │   ├── __init__.py
+│   │   ├── models.py          # Définitions des modèles ML
+│   │   ├── train.py           # Scripts pour l'entraînement des modèles
+│   │   └── predict.py         # Scripts pour faire des prédictions
+│   ├── visualization/         # Code spécifique à la génération des visualisations (si non géré par le frontend)
+│   │   └── __init__.py
+│   └── utils/                 # Fonctions et classes utilitaires
+│       ├── __init__.py
+│       └── helpers.py
+│
+├── frontend/                  # (Optionnel, si vous avez un frontend séparé mais dans le même dépôt)
+│   ├── public/
+│   ├── src/                   # Code source du frontend (ex: React, Vue.js)
+│   └── package.json
+│
+├── models/                    # Modèles de machine learning entraînés et sauvegardés
+│
+├── tests/                     # Tests automatisés
+│   ├── __init__.py
+│   ├── unit/                  # Tests unitaires
+│   └── integration/           # Tests d'intégration
+│
+├── config/                    # Fichiers de configuration
+│   └── config.py              # Paramètres de configuration, clés API (à mettre dans .gitignore si sensibles)
+│
+├── venv/ ou cyber-env/        # Votre environnement virtuel Python (doit être dans .gitignore)
+│
+├── requirements.txt           # Dépendances Python du projet
+├── README.md                  # Description du projet, instructions d'installation et d'utilisation
+├── LICENSE                    # Licence du projet (ex: MIT, Apache 2.0)
+└── Dockerfile                 # (Optionnel) Pour la conteneurisation avec Docker
+
