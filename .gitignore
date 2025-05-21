@@ -1,0 +1,84 @@
+# ------------------------------
+# Python Virtual Environments
+# ------------------------------
+cyber-env-py312/
+venv/
+env/
+ENV/
+
+# ------------------------------
+# Python Byte-compiled / C Extensions
+# ------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# ------------------------------
+# Jupyter Notebook
+# ------------------------------
+.ipynb_checkpoints/
+
+# ------------------------------
+# VS Code
+# ------------------------------
+.vscode/
+
+# ------------------------------
+# OS Files
+# ------------------------------
+.DS_Store
+Thumbs.db
+
+# ------------------------------
+# Logs
+# ------------------------------
+*.log
+logs/
+
+# ------------------------------
+# Databases
+# ------------------------------
+*.sqlite3
+
+# ------------------------------
+# Neo4j Data Directories
+# ------------------------------
+import/
+plugins/
+data/
+logs/
+
+# ------------------------------
+# Machine-Learning Models & Checkpoints
+# ------------------------------
+models/
+
+# ------------------------------
+# Raw / External Data (large or sensitive)
+# ------------------------------
+data/raw/
+data/external/
+
+# ------------------------------
+# Distribution / Packaging
+# ------------------------------
+build/
+dist/
+*.egg-info/
+.eggs/
+__pypackages__/
+
+# ------------------------------
+# Front-End Dependencies
+# ------------------------------
+frontend/node_modules/
+npm-debug.log
+
+# ------------------------------
+# Docker / Environment Variables
+# ------------------------------
+Dockerfile
+docker-compose.override.yml
+.env
+
