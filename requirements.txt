@@ -10,4 +10,7 @@ tensorflow-cpu
 matplotlib
 plotly
 jupyter
+pyarrow
+tabulate
+seaborn
 

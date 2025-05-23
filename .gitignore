@@ -82,3 +82,4 @@ Dockerfile
 docker-compose.override.yml
 .env
 
+.env
